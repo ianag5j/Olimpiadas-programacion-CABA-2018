@@ -1,0 +1,27 @@
+<% include partials/_header %>
+<!--
+   Esta vista la podemos ver una vez que hayamos tocado el boton
+   de "Modificar", pudiendo asi modificar el objeto seleccionado.
+-->
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-5 offset-md-3 card">
+      <div class="card-body">
+        <form action="/update/<%= data.id %>" method="POST">
+          <div class="form-group">
+            <input type="text" name="valor" value="<%= data.valor%>" placeholder="Valor" class="form-control" autofocus>
+          </div>
+          <div class="form-group">
+            <input type="text" name="descripcion" placeholder="Descripcion" class="form-control">
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Guardar Sensor
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% include partials/_footer %>

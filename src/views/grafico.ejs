@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="highcharts/highstock.js"></script>
+    <script src="highcharts/modules/exporting.js"></script>
+    <script src="highcharts/modules/export-data.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+</head>
+<body>
+	<!-- Navegacion -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <!-- <a class="navbar-brand" href="/">El Rancho - Olimpiadas 2018</a> -->
+            <a class="navbar-brand" href="/">Inicio</a> 
+            <a class="navbar-brand" href="/crud">Crud</a> 
+          </nav>
+          
+	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+
+
+<script type="text/javascript">
+  var socket = io();
+
+    Highcharts.setOptions({
+        lang: {
+            months: [
+                'Enero', 'Febrero', 'Marzo', 'Abril',
+                'Mayo', 'Junio', 'Julio', 'Agosto',
+                'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ],
+            weekdays: [
+                'Domingo', 'Lunes', 'Martes', 'Miercoles',
+                'Jueves', 'Viernes', 'Sabado'
+            ]
+        }
+    });
+	Highcharts.stockChart('container', {
+    chart: {
+        events: {
+
+            load: function () {
+                var series = this.series[0];
+
+
+                  socket.on('chart_data_init', function (sample) {
+                    series.setData(sample.data);
+                  });
+
+                  socket.on('chart_data', function (sample) {
+                      //add chart data to series
+                      console.log(sample);
+                      series.addPoint([sample.x, sample.y], true, false);
+                  });
+            }
+        }
+    },
+
+    time: {
+        useUTC: false
+    },
+
+    rangeSelector: {
+        buttons: [{
+            count: 1,
+            type: 'minute',
+            text: '1M'
+        }, {
+            count: 5,
+            type: 'minute',
+            text: '5M'
+        }, {
+            type: 'all',
+            text: 'Todo'
+        }],
+        inputEnabled: false,
+        selected: 0
+    },
+
+    title: {
+        text: 'Datos Sensor1'
+    },
+
+    exporting: {
+        enabled: true
+    },
+
+    series: [{
+        name: 'Dato Sensor1',
+        data: (function () {
+            //tiene q graficar todos los datos de la BD aca
+
+            // // generate an array of random data
+            // var data = [],
+            //     time = (new Date()).getTime(),
+            //     i;
+
+            // for (i = -999; i <= 0; i += 1) {
+            //     data.push([
+            //         time + i * 1000,
+            //         Math.round(Math.random() * 100)
+            //     ]);
+            // }
+            // console.log(data);
+            // return data;
+        }())
+    }]
+});
+</script>
+
+</body>
+</html>
